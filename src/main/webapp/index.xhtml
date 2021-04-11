@@ -2,9 +2,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 >
 <h:head/>
 <h:body>
-    <h2>Hello World!</h2>
+    <h:link outcome="recipes" value="Recipes"/>
+    <h2>Elements:</h2>
+    <ol>
+        <ui:repeat value="#{elems.allElems}" var="elem">
+            <li>#{elem.name}</li>
+        </ui:repeat>
+    </ol>
+    <h:form>
+        <h:inputText value="#{elems.elementToCreate.name}" required="true" />
+        <h:commandButton value="Add new element" action="#{elems.createElement}" />
+    </h:form>
 </h:body>
 </html>

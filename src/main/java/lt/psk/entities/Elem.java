@@ -1,24 +1,49 @@
 package lt.psk.entities;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.enterprise.context.RequestScoped;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
 
-@RequestScoped
-public class Elem {
+@Entity
+@NamedQueries({
+    @NamedQuery(name = "Elem.findAll", query = "select e from Elem as e")
+})
+@Table(name = "ELEMS")
+@Getter @Setter
+public class Elem implements Serializable {
 
-    public String sakykLabas() {
-        return "Labas " + new Date() + " " + toString();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Size(max = 50)
+    @Column(name = "NAME")
+    private String name;
+
+    private String category;
+    private String color;
+    private Date createdOn;
+
+    public Elem() { }
+
+    public Elem(String name) {
+        this.name = name;
     }
 
-    @PostConstruct
-    public void init() {
-        System.out.println(toString() + " constructed.");
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Elem element = (Elem) o;
+        return id == element.id;
     }
 
-    @PreDestroy
-    public void aboutToDie() {
-        System.out.println(toString() + " ready to die.");
+    @Override
+    public int hashCode() {
+        return id;
     }
 }
