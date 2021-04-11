@@ -18,5 +18,6 @@
     <mappers>
         <mapper resource="mybatis.xml/ElemMapper.xml"/>
         <mapper resource="mybatis.xml/RecipeMapper.xml"/>
+        <mapper resource="mybatis.xml/RecipeElemMapper.xml"/>
     </mappers>
 </configuration>

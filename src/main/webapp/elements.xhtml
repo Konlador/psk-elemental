@@ -7,7 +7,7 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core"
 >
 <h:head>
-    <link rel="stylesheet" type="text/css" href="elements.css" />
+    <h:outputStylesheet name="css/elements.css" />
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />
 </h:head>
 <h:body>
@@ -15,7 +15,6 @@
     <h:link outcome="myBatis/elements" value="MyBatis implementation"/>
 
     <h2>Crate new recipe</h2>
-
     <h:form>
         <h:inputText value="#{recipes.ingredients[0]}" required="true" />
         +

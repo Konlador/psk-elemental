@@ -4,12 +4,42 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
+    <h:outputStylesheet name="css/elements.css" />
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />
 </h:head>
 <h:body>
     <h:link outcome="recipes" value="Recipes"/><br/>
     <h:link outcome="/elements" value="JPA implementation"/>
+
+    <h2>Crate new recipe</h2>
+    <h:form>
+        <h:inputText value="#{recipesMyBatis.ingredients[0]}" required="true" />
+        +
+        <h:inputText value="#{recipesMyBatis.ingredients[1]}" required="true" />
+        =
+        <h:inputText value="#{recipesMyBatis.elementToCreate.name}" required="true" />
+        <h:selectOneMenu value="#{recipesMyBatis.elementToCreate.category}">
+            <f:selectItem itemValue="blue" itemLabel="Blue" />
+            <f:selectItem itemValue="dark-blue" itemLabel="Dark blue" />
+            <f:selectItem itemValue="green" itemLabel="Green" />
+            <f:selectItem itemValue="brown" itemLabel="Brown" />
+            <f:selectItem itemValue="orange" itemLabel="Orange" />
+        </h:selectOneMenu>
+        <h:commandButton value="Add recipe" action="#{recipesMyBatis.createRecipe}" />
+    </h:form>
+
+    <h2>Elements</h2>
+    <c:forEach items="#{elemsMyBatis.categorizedElems}" var="categoryEntry">
+        <div class="category #{categoryEntry.key}">
+            <c:forEach items="#{categoryEntry.value}" var="elem">
+                <div class="elem #{elem.category}" onclick="console.log('Should add to research')">
+                    #{elem.name}
+                </div>
+            </c:forEach>
+        </div>
+    </c:forEach>
 </h:body>
 </html>

@@ -1,8 +1,8 @@
 package lt.psk.usecases;
 
 import lombok.Getter;
-import lt.psk.entities.Elem;
-import lt.psk.persistence.ElemsDAO;
+import lt.psk.mybatis.model.Elem;
+import lt.psk.mybatis.dao.ElemMapper;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
@@ -13,10 +13,10 @@ import java.util.*;
 import static java.util.stream.Collectors.groupingBy;
 
 @Model
-public class Elems implements Serializable {
+public class ElemsMyBatis implements Serializable {
 
     @Inject
-    private ElemsDAO elemsDAO;
+    private ElemMapper elemMapper;
 
     @Getter
     private Map<String, List<Elem>> categorizedElems;
@@ -27,7 +27,7 @@ public class Elems implements Serializable {
     }
 
     public void loadElems() {
-        var allElems = elemsDAO.loadAll();
+        var allElems = elemMapper.selectAll();
         var groups = allElems.stream().collect(groupingBy(elem -> elem.getCategory()));
         this.categorizedElems = sortByValue(groups);
     }

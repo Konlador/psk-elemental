@@ -23,4 +23,25 @@ public class Recipe {
     public void setResultId(Integer resultId) {
         this.resultId = resultId;
     }
+
+    // added manually
+    private Elem result;
+    private List<Elem> ingredients;
+
+    public Elem getResult() {
+        return result;
+    }
+
+    public void setResult(Elem result) {
+        this.result = result;
+    }
+
+    public List<Elem> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Elem> ingredients) {
+        this.ingredients = ingredients;
+    }
+
 }

@@ -13,6 +13,8 @@ public interface ElemMapper {
 
     Elem selectByPrimaryKey(Integer id);
 
+    Elem selectByName(String name);
+
     List<Elem> selectAll();
 
     int updateByPrimaryKey(Elem record);

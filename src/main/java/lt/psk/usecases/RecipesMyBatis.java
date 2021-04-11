@@ -2,10 +2,12 @@ package lt.psk.usecases;
 
 import lombok.Getter;
 import lombok.Setter;
-import lt.psk.entities.Elem;
-import lt.psk.entities.Recipe;
-import lt.psk.persistence.ElemsDAO;
-import lt.psk.persistence.RecipesDAO;
+import lt.psk.mybatis.dao.RecipeElemMapper;
+import lt.psk.mybatis.model.Elem;
+import lt.psk.mybatis.model.Recipe;
+import lt.psk.mybatis.dao.ElemMapper;
+import lt.psk.mybatis.dao.RecipeMapper;
+import lt.psk.mybatis.model.RecipeElem;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -18,13 +20,16 @@ import java.util.Comparator;
 import java.util.List;
 
 @Model
-public class Recipes implements Serializable {
+public class RecipesMyBatis implements Serializable {
 
     @Inject
-    private RecipesDAO recipesDAO;
+    private RecipeMapper recipeMapper;
 
     @Inject
-    private ElemsDAO elemsDAO;
+    private ElemMapper elemMapper;
+
+    @Inject
+    private RecipeElemMapper recipeElemMapper;
 
     @Getter @Setter
     private Elem elementToCreate = new Elem();
@@ -42,7 +47,7 @@ public class Recipes implements Serializable {
 
     @ApplicationScoped
     public void loadRecipes() {
-        var allRecipes = recipesDAO.loadAll();
+        var allRecipes = recipeMapper.selectAll();
         for(Recipe recipe : allRecipes){
             recipe.getIngredients().sort(Comparator.comparingInt(Elem::getId));
         }
@@ -54,22 +59,32 @@ public class Recipes implements Serializable {
         if (ingredients.length < 2) return "Fail: too few ingredients.";
 
         var recipeToCreate = new Recipe();
+        recipeToCreate.setIngredients(new ArrayList<>());
 
         for (String ingredientName : ingredients) {
-            var ingredient = elemsDAO.findByName(ingredientName);
+            var ingredient = elemMapper.selectByName(ingredientName);
             if(ingredient == null){
                 return "Fail: Ingredient does not exist";
             }
             recipeToCreate.getIngredients().add(ingredient);
         }
-        recipesDAO.persist(recipeToCreate);
 
-        var resultElement = elemsDAO.findByName(elementToCreate.getName());
+        var resultElement = elemMapper.selectByName(elementToCreate.getName());
         if(resultElement == null){
             resultElement = elementToCreate;
-            elemsDAO.persist(resultElement);
+            elemMapper.insert(resultElement);
         }
-        recipeToCreate.setResult(resultElement);
+        recipeToCreate.setResultId(resultElement.getId());
+
+        recipeMapper.insert(recipeToCreate);
+
+        // insert relationships
+        for (Elem ingredient : recipeToCreate.getIngredients()) {
+            var recipeElem = new RecipeElem();
+            recipeElem.setRecipeId(recipeToCreate.getId());
+            recipeElem.setIngredientsId(ingredient.getId());
+            recipeElemMapper.insert(recipeElem);
+        }
 
         return "elements?faces-redirect=true";
     }
