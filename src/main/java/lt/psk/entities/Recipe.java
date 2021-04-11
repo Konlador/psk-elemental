@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +19,11 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToMany
-    private List<Elem> ingredients;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Elem> ingredients = new ArrayList<>();
+
+    public List<Elem> getIngredients(){return this.ingredients;}
+    public void setIngredients(List<Elem> ingredients){this.ingredients = ingredients;}
 
     @ManyToOne
     private Elem result;

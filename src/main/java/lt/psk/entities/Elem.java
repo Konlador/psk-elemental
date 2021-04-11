@@ -7,10 +7,12 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Elem.findAll", query = "select e from Elem as e")
+    @NamedQuery(name = "Elem.findAll", query = "select e from Elem as e"),
+    @NamedQuery(name = "Elem.findByName", query = "select e from Elem as e WHERE e.name = :name")
 })
 @Table(name = "ELEMS")
 @Getter @Setter
@@ -21,12 +23,10 @@ public class Elem implements Serializable {
     private Integer id;
 
     @Size(max = 50)
-    @Column(name = "NAME")
     private String name;
 
+    @Size(max = 50)
     private String category;
-    private String color;
-    private Date createdOn;
 
     public Elem() { }
 
@@ -39,11 +39,11 @@ public class Elem implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Elem element = (Elem) o;
-        return id == element.id;
+        return Objects.equals(name, element.name);
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return Objects.hash(name);
     }
 }

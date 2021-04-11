@@ -3,19 +3,45 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
 >
-<h:head/>
+<h:head>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />
+</h:head>
 <h:body>
     <h:link outcome="recipes" value="Recipes"/>
-    <h2>Elements:</h2>
-    <ol>
-        <ui:repeat value="#{elems.allElems}" var="elem">
-            <li>#{elem.name}</li>
-        </ui:repeat>
-    </ol>
+
+    <h2>Crate new recipe</h2>
+
     <h:form>
-        <h:inputText value="#{elems.elementToCreate.name}" required="true" />
-        <h:commandButton value="Add new element" action="#{elems.createElement}" />
+        <h:inputText value="#{recipes.ingredients[0]}" required="true" />
+        +
+        <h:inputText value="#{recipes.ingredients[1]}" required="true" />
+        =
+        <h:inputText value="#{recipes.elementToCreate.name}" required="true" />
+        <h:selectOneMenu value="#{recipes.elementToCreate.category}">
+            <f:selectItem itemValue="blue" itemLabel="Blue" />
+            <f:selectItem itemValue="dark-blue" itemLabel="Dark blue" />
+            <f:selectItem itemValue="green" itemLabel="Green" />
+            <f:selectItem itemValue="brown" itemLabel="Brown" />
+            <f:selectItem itemValue="orange" itemLabel="Orange" />
+        </h:selectOneMenu>
+        <h:commandButton value="Add recipe" action="#{recipes.createRecipe}" />
     </h:form>
+
+    <h2>Elements</h2>
+    <c:forEach items="#{elems.categorizedElems}" var="categoryEntry">
+<!--        <p>Category: <h:outputText value="#{categoryEntry.key}" /></p>-->
+        <div class="category #{categoryEntry.key}">
+            <c:forEach items="#{categoryEntry.value}" var="elem">
+                <div class="elem #{elem.category}" onclick="console.log('Should add to research')">
+                    #{elem.name}
+                </div>
+            </c:forEach>
+        </div>
+    </c:forEach>
+
 </h:body>
 </html>

@@ -8,7 +8,9 @@ import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.io.Serializable;
-import java.util.List;
+import java.util.*;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Model
 public class Elems implements Serializable {
@@ -18,7 +20,8 @@ public class Elems implements Serializable {
 
     private Elem elementToCreate = new Elem();
 
-    private List<Elem> allElems;
+    private Map<String, List<Elem>> categorizedElems;
+    public Map<String, List<Elem>> getCategorizedElems() { return categorizedElems; }
 
     @PostConstruct
     public void init(){
@@ -26,11 +29,9 @@ public class Elems implements Serializable {
     }
 
     public void loadElems() {
-        this.allElems = elemsDAO.loadAll();
-    }
-
-    public List<Elem> getAllElems() {
-        return allElems;
+        var allElems = elemsDAO.loadAll();
+        var groups = allElems.stream().collect(groupingBy(elem -> elem.getCategory()));
+        this.categorizedElems = sortByValue(groups);
     }
 
     @Transactional
@@ -39,11 +40,22 @@ public class Elems implements Serializable {
         return "success";
     }
 
-    public Elem getElementToCreate() {
-        return elementToCreate;
-    }
+    private static Map<String, List<Elem>> sortByValue(Map<String, List<Elem>> unsortMap) {
 
-    public void setElementToCreate(Elem elementToCreate) {
-        this.elementToCreate = elementToCreate;
+        List<Map.Entry<String, List<Elem>>> list =
+                new LinkedList<>(unsortMap.entrySet());
+
+        Collections.sort(list, (o1, o2) -> {
+            var minId1 = o1.getValue().stream().mapToInt(Elem::getId).min().getAsInt();
+            var minId2 = o2.getValue().stream().mapToInt(Elem::getId).min().getAsInt();
+            return minId1 - minId2;
+        });
+
+        Map<String, List<Elem>> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<String, List<Elem>> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
     }
 }

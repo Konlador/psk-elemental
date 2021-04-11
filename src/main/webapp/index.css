@@ -1,0 +1,28 @@
+.blue { --background: rgb(84, 179, 227); --color: black; }
+.dark-blue {  --background: rgb(84, 117, 227); --color: white; }
+.green { --background: rgb(84, 227, 96); --color: black; }
+.brown { --background: rgb(181, 129, 72); --color: white; }
+.orange { --background: rgb(227, 132, 84); --color: white; }
+
+.elem {
+    --element-scale: 0.90;
+
+    display: inline-flex;
+    flex-direction: column;
+    text-align: center;
+    font-family: Roboto;
+    position: relative;
+    overflow: hidden;
+    word-wrap: break-word;
+    width: calc(80px * var(--element-scale));
+    height: calc(80px * var(--element-scale));
+    padding: calc(4px * var(--element-scale));
+    padding-top: calc(5px * var(--element-scale));
+    border-radius: calc(15px * var(--element-scale));
+    font-size: calc(15px * var(--element-scale));
+    margin: calc(0.5em * var(--element-scale));
+    box-shadow: 0 calc(3px * var(--element-scale)) calc(10px * var(--element-scale)) rgba(0,0,0,0.18);
+
+    background: var(--background);
+    color: var(--color);
+}

@@ -13,16 +13,14 @@ public class RecipesDAO {
     @PersistenceContext
     private EntityManager em;
 
-    public List<Recipe> loadAll() {
-        return em.createNamedQuery("Recipe.findAll", Recipe.class).getResultList();
+    public void persist(Recipe recipe) {
+        this.em.persist(recipe);
     }
+
+    public List<Recipe> loadAll() { return em.createNamedQuery("Recipe.findAll", Recipe.class).getResultList(); }
 
     public void setEm(EntityManager em) {
         this.em = em;
-    }
-
-    public void persist(Recipe recipe) {
-        this.em.persist(recipe);
     }
 
     public Recipe findOne(Integer id) { return em.find(Recipe.class, id); }
