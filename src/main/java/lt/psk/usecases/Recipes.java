@@ -79,6 +79,6 @@ public class Recipes implements Serializable {
         }
         recipeToCreate.setResult(resultElement);
 
-        return "index?faces-redirect=true";
+        return "elements?faces-redirect=true";
     }
 }
