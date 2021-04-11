@@ -11,7 +11,7 @@ import java.util.List;
 @NamedQueries({
     @NamedQuery(name = "Recipe.findAll", query = "select r from Recipe as r")
 })
-@Table(name = "RECIPES")
+@Table(name = "RECIPE")
 @Getter @Setter
 public class Recipe {
 

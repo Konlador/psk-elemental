@@ -14,7 +14,7 @@ import java.util.Objects;
     @NamedQuery(name = "Elem.findAll", query = "select e from Elem as e"),
     @NamedQuery(name = "Elem.findByName", query = "select e from Elem as e WHERE e.name = :name")
 })
-@Table(name = "ELEMS")
+@Table(name = "ELEM")
 @Getter @Setter
 public class Elem implements Serializable {
 
