@@ -3,14 +3,14 @@ package lt.psk.persistence;
 import lt.psk.entities.Recipe;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @ApplicationScoped
 public class RecipesDAO {
 
-    @PersistenceContext
+    @Inject
     private EntityManager em;
 
     public void persist(Recipe recipe) {
