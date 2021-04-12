@@ -1,47 +1,21 @@
 package lt.psk.mybatis.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 public class Recipe {
 
+    @Getter @Setter
     private Integer id;
 
+    @Getter @Setter
     private Integer resultId;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getResultId() {
-        return resultId;
-    }
-
-    public void setResultId(Integer resultId) {
-        this.resultId = resultId;
-    }
-
-    // added manually
+    @Getter @Setter
     private Elem result;
+
+    @Getter @Setter
     private List<Elem> ingredients;
-
-    public Elem getResult() {
-        return result;
-    }
-
-    public void setResult(Elem result) {
-        this.result = result;
-    }
-
-    public List<Elem> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<Elem> ingredients) {
-        this.ingredients = ingredients;
-    }
-
 }

@@ -1,24 +1,13 @@
 package lt.psk.mybatis.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class RecipeElem {
 
+    @Getter @Setter
     private Integer recipeId;
 
+    @Getter @Setter
     private Integer ingredientsId;
-
-    public Integer getRecipeId() {
-        return recipeId;
-    }
-
-    public void setRecipeId(Integer recipeId) {
-        this.recipeId = recipeId;
-    }
-
-    public Integer getIngredientsId() {
-        return ingredientsId;
-    }
-
-    public void setIngredientsId(Integer ingredientsId) {
-        this.ingredientsId = ingredientsId;
-    }
 }
