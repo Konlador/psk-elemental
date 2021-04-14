@@ -62,6 +62,26 @@ public class Recipes implements Serializable {
             }
             recipeToCreate.getIngredients().add(ingredient);
         }
+        recipeToCreate.getIngredients().sort(Comparator.comparingInt(Elem::getId));
+
+        // check there is no other recipe with exact same ingredients
+        var recipes = recipesDAO.loadAll();
+        for (var recipe: recipes) {
+            recipe.getIngredients().sort(Comparator.comparingInt(Elem::getId));
+            if(recipeToCreate.getIngredients().size() != recipe.getIngredients().size()) continue;
+
+            var sameIngredients = true;
+            for(int i = 0; i < recipeToCreate.getIngredients().size(); i++) {
+                if(recipe.getIngredients().get(i).getId() != recipeToCreate.getIngredients().get(i).getId()){
+                    sameIngredients = false;
+                    break;
+                }
+            }
+            if (sameIngredients){
+                return "Fail: recipe already exists with the ingredients";
+            }
+        }
+
         recipesDAO.persist(recipeToCreate);
 
         var resultElement = elemsDAO.findByName(elementToCreate.getName());
